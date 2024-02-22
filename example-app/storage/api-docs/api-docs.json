@@ -1,0 +1,184 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Nome da Sua API",
+        "description": "Uma breve descrição da sua API",
+        "contact": {
+            "email": "seuemail@exemplo.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:9086",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Log in a user",
+                "operationId": "4596fcabf8d77d24d6f88eb1a61ec784",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "test@example.com",
+                                    "password": "teste123"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get authenticated user data",
+                "operationId": "facf643270f6f524d7a721a4018aa7fb",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/pedidos-reembolso": {
+            "post": {
+                "tags": [
+                    "Pedidos de Reembolso"
+                ],
+                "summary": "Cria um novo pedido de reembolso",
+                "description": "Cria um novo pedido de reembolso com os dados fornecidos.",
+                "operationId": "store",
+                "requestBody": {
+                    "description": "Dados do pedido de reembolso",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "empregado_id",
+                                    "dataDespesa",
+                                    "descricao",
+                                    "valor"
+                                ],
+                                "properties": {
+                                    "empregado_id": {
+                                        "type": "integer",
+                                        "format": "id",
+                                        "example": 1
+                                    },
+                                    "dataDespesa": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "YYYY-MM-DD"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Despesas com viagem"
+                                    },
+                                    "valor": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 123.45
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pedido de reembolso criado com sucesso."
+                    },
+                    "400": {
+                        "description": "Dados inválidos."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "properties": {
+                    "id": {
+                        "description": "ID do Usuário",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nome do Usuário",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email do Usuário",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Data de Criação do Usuário",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data da Última Atualização do Usuário",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
